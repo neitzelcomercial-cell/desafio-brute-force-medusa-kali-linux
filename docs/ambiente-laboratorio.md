@@ -17,11 +17,11 @@ Descrever as máquinas virtuais, a rede de laboratório e os serviços disponibi
 | IP do alvo | `192.168.56.10` |
 | Rede | Host-Only (rede privada do laboratório) |
 
-As capturas mostram as interfaces `eth0` ativas no Kali e no Metasploitable. No teste de conectividade, o Kali recebeu 4 respostas de 4 pacotes enviados ao alvo, com 0% de perda. A tela do VirtualBox também mostra os discos virtuais associados às máquinas, incluindo arquivos do Metasploitable.
+Durante o trabalho, foram observadas as interfaces `eth0` ativas no Kali e no Metasploitable. No teste de conectividade registrado, o Kali recebeu 4 respostas de 4 pacotes enviados ao alvo, com 0% de perda. A preparação no VirtualBox utilizou os discos virtuais associados às duas máquinas. Esses detalhes fazem parte do histórico documentado do laboratório; nem todos possuem uma imagem entre as cinco capturas preservadas.
 
 ## Serviços identificados pelo Nmap
 
-A captura do reconhecimento de serviços no host `192.168.56.10` mostra o host ativo e diversas portas abertas. Entre os serviços legíveis na evidência:
+A saída do reconhecimento de serviços no host `192.168.56.10`, registrada durante o trabalho, identificou o host ativo e diversas portas abertas. Entre os serviços transcritos:
 
 | Porta | Serviço | Identificação exibida |
 |---|---|---|
@@ -49,11 +49,11 @@ A captura do reconhecimento de serviços no host `192.168.56.10` mostra o host a
 | 8009/tcp | AJP13 | Apache Jserv (Protocol v1.3) |
 | 8180/tcp | HTTP | Apache Tomcat/Coyote JSP engine 1.1 |
 
-A captura adicional mostra uma verificação específica da porta 21, confirmando `vsftpd 2.3.4`. Portanto, os registros de FTP devem distinguir o serviço da porta 21 (vsftpd) do serviço da porta 2121 (ProFTPD).
+Uma verificação específica da porta 21 também registrou `vsftpd 2.3.4`. Portanto, os registros de FTP devem distinguir o serviço da porta 21 (vsftpd) do serviço da porta 2121 (ProFTPD). Essa verificação é descrita no texto, mas sua imagem não está entre as cinco capturas preservadas.
 
 ## SMB e compartilhamentos
 
-Foi executado `smbclient -L //192.168.56.10 -U msfadmin`. A captura exibe os compartilhamentos `print$`, `tmp`, `opt`, `IPC$`, `ADMIN$` e `msfadmin`, além do grupo de trabalho `WORKGROUP` e do servidor `METASPLOITABLE`. Outra captura mostra uma listagem de diretório no prompt do cliente SMB. Uma tentativa anterior apresentou `NT_STATUS_LOGON_FAILURE`; a documentação não deve tratar toda tentativa de autenticação como bem-sucedida.
+Foi executado `smbclient -L //192.168.56.10 -U msfadmin`. O resultado registrado lista os compartilhamentos `print$`, `tmp`, `opt`, `IPC$`, `ADMIN$` e `msfadmin`, além do grupo de trabalho `WORKGROUP` e do servidor `METASPLOITABLE`. Também foi registrada uma listagem de diretório no prompt do cliente SMB. Uma tentativa anterior apresentou `NT_STATUS_LOGON_FAILURE`; a documentação não deve tratar toda tentativa de autenticação como bem-sucedida.
 
 ## Procedimentos já realizados
 

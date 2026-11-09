@@ -2,7 +2,7 @@
 
 ## Kali Linux
 
-Distribuição Linux utilizada como estação de análise no laboratório. Nas capturas, a interface `eth0` aparece ativa. O endereço registrado para o Kali é `192.168.56.20`.
+Distribuição Linux utilizada como estação de análise no laboratório. Durante a preparação do laboratório, a interface `eth0` foi observada ativa. O endereço registrado para o Kali é `192.168.56.20`.
 
 ## Nmap
 

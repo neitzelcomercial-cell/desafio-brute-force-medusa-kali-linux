@@ -1,18 +1,16 @@
 # Evidências e resultados
 
-Este documento separa três situações: capturas que já estão no repositório, resultados de execução registrados durante o desenvolvimento e itens que ainda precisam ser anexados ou conferidos. A existência de um resultado descrito aqui não significa que sua captura específica esteja versionada.
+Este documento separa as capturas efetivamente versionadas dos resultados de execução registrados durante o desenvolvimento. A existência de um resultado descrito aqui não significa que sua captura específica esteja disponível no repositório.
 
 ## Inventário das capturas
 
-O diretório `evidencias/` contém **17 arquivos de imagem numerados**, de `01` a `17`. O índice em [README das evidências](../evidencias/README.md) descreve a finalidade registrada para cada captura.
+Após a revisão visual das 17 imagens originais, foram mantidas **5 capturas relevantes**. Os nomes e números originais foram preservados para manter a rastreabilidade. Consulte o [índice das evidências](../evidencias/README.md).
 
-As imagens preservadas documentam principalmente:
-
-- preparação das máquinas virtuais e interfaces de rede;
-- conectividade entre Kali e Metasploitable 2;
-- reconhecimento de portas e serviços com Nmap;
-- enumeração de compartilhamentos SMB;
-- verificações e conexão manual ao FTP.
+As cinco imagens documentam:
+- conectividade entre Kali e Metasploitable 2 e verificação inicial do FTP;
+- consulta de compartilhamentos SMB;
+- identificação das versões dos serviços FTP e SMB;
+- verificação de FTP anônimo por Nmap e conexão manual.
 
 ## Resultados registrados durante o trabalho
 
@@ -30,7 +28,6 @@ As imagens preservadas documentam principalmente:
 - [x] FTP identificado na porta 2121 (ProFTPD 1.3.1, conforme saída registrada).
 - [x] SMB/Samba identificado nas portas 139 e 445.
 - [x] Consulta de compartilhamentos com `smbclient` documentada.
-- [x] Captura de listagem em sessão SMB descrita no índice.
 - [x] Login FTP anônimo documentado como permitido nas verificações registradas.
 
 ### Testes controlados com Medusa
@@ -41,7 +38,7 @@ O comando documentado em [Ferramentas utilizadas](ferramentas.md) direcionou o m
 
 - [x] Comando e parâmetros descritos.
 - [x] Resultado reportado transcrito sem divulgar a senha.
-- [ ] Incluir a captura da execução, caso esteja disponível, após conferir e ocultar credenciais.
+- [ ] Captura específica da execução ainda não incluída.
 
 **SMB — resultado registrado**
 
@@ -49,13 +46,11 @@ O comando documentado em [Ferramentas utilizadas](ferramentas.md) direcionou o m
 
 - [x] Comando e parâmetros descritos.
 - [x] Resultado reportado transcrito sem divulgar a senha.
-- [ ] Incluir a captura da execução, caso esteja disponível, após conferir e ocultar credenciais.
+- [ ] Captura específica da execução ainda não incluída.
 
 ## Pendências antes da entrega
 
 - [ ] Confirmar se as capturas específicas do Medusa FTP e SMB podem ser recuperadas.
-- [ ] Fazer conferência visual final das 17 imagens para garantir que não exponham senhas, tokens ou dados pessoais.
-- [ ] Se houver novas capturas, nomeá-las em sequência e atualizar o índice.
 - [ ] Conferir os requisitos exatos do desafio/plataforma de avaliação.
 - [ ] Revisar ortografia, links internos e visualização do README no GitHub.
 

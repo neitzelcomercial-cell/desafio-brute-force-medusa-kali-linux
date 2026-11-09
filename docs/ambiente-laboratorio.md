@@ -71,7 +71,7 @@ Foi executado `smbclient -L //192.168.56.10 -U msfadmin`. O resultado registrado
 ## Itens a confirmar ou complementar
 
 - Captura detalhada das configurações da rede Host-Only no VirtualBox.
-- Guardar a linha completa do comando Nmap usado no reconhecimento amplo; a captura mostra o resultado, mas não o comando inteiro.
+- Guardar a linha completa do comando Nmap usado no reconhecimento amplo; a saída registrada mostra os serviços identificados, mas não o comando inteiro.
 - Registrar separadamente os comandos e resultados completos do cliente SMB.
 - Anexar evidências específicas da sessão FTP e da autenticação anônima, se disponíveis.
 

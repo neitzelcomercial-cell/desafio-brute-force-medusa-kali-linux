@@ -1,66 +1,70 @@
 # Evidências e resultados
 
-Este documento acompanha o que já foi realizado e o que ainda precisa de captura ou conferência. Os resultados abaixo foram transcritos das saídas compartilhadas durante o trabalho; isso não significa que imagens dessas execuções já estejam anexadas ao repositório.
+Este documento separa as capturas efetivamente versionadas dos resultados de execução registrados durante o desenvolvimento. A existência de um resultado descrito aqui não significa que sua captura específica esteja disponível no repositório.
 
-## Evidências recebidas e analisadas
+## Inventário das capturas
 
-- [x] Tela do VirtualBox com discos virtuais do Kali e do Metasploitable.
-- [x] Interface `eth0` do Metasploitable observada ativa.
-- [x] Interface `eth0` do Kali observada ativa.
-- [x] Teste de conectividade: 4 pacotes enviados, 4 recebidos e 0% de perda para `192.168.56.10`.
-- [x] Nmap: reconhecimento amplo do alvo `192.168.56.10`, com múltiplos serviços e portas identificados.
-- [x] Nmap: FTP nas portas 21 e 2121 abertas; identificação anterior de vsftpd 2.3.4 na porta 21 e ProFTPD 1.3.1 na porta 2121.
-- [x] Nmap: identificação de Samba `smbd 3.X - 4.X` nas portas 139 e 445, grupo `WORKGROUP`.
-- [x] Consulta de compartilhamentos SMB com `smbclient -L`.
-- [x] Captura de listagem de diretório no prompt interativo SMB.
+Após a revisão visual das capturas originais, foram mantidas **5 capturas relevantes**. Os nomes e números originais foram preservados para manter a rastreabilidade. Consulte o [índice das evidências](../evidencias/README.md).
 
-## Testes de autenticação com Medusa
+As cinco imagens documentam:
+- conectividade entre Kali e Metasploitable 2 e verificação inicial do FTP;
+- consulta de compartilhamentos SMB;
+- identificação das versões dos serviços FTP e SMB;
+- verificação de FTP anônimo por Nmap e conexão manual.
 
-### FTP — concluído
+## Resultados registrados durante o trabalho
 
-- [x] Medusa 2.3 e módulo FTP consultados.
-- [x] Wordlist de laboratório conferida (três entradas).
-- [x] Validação manual de autenticação FTP do usuário de laboratório `msfadmin`.
-- [x] Execução controlada do módulo FTP contra `192.168.56.10:21`, com uma tarefa simultânea.
-- [x] Saída reportou `ACCOUNT FOUND: [ftp]` e `SUCCESS` para o usuário de laboratório `msfadmin`.
-- [ ] Anexar uma captura sanitizada da execução FTP, se disponível.
+### Preparação e conectividade
 
-### SMB — concluído
+- [x] Kali Linux e Metasploitable 2 preparados no VirtualBox.
+- [x] Rede privada Host-Only registrada.
+- [x] Endereços registrados: Kali `192.168.56.20` e alvo `192.168.56.10`.
+- [x] Teste de conectividade documentado: 4 pacotes enviados, 4 recebidos e 0% de perda.
 
-- [x] Módulo `smbnt` identificado (versão 3.0).
-- [x] Nmap confirmou Samba nas portas 139 e 445.
-- [x] Execução controlada do módulo SMBNT contra `192.168.56.10:445`, com uma tarefa simultânea.
-- [x] Saída reportou `ACCOUNT FOUND: [smbnt]` e `SUCCESS (ADMIN$ - Access Allowed)` para o usuário de laboratório `msfadmin`.
-- [ ] Anexar uma captura sanitizada da execução SMB, se disponível.
+### Reconhecimento e enumeração
 
-## Outros pontos de progresso confirmados
+- [x] Reconhecimento do host `192.168.56.10` com Nmap documentado.
+- [x] FTP identificado na porta 21 (vsftpd 2.3.4, conforme saída registrada).
+- [x] FTP identificado na porta 2121 (ProFTPD 1.3.1, conforme saída registrada).
+- [x] SMB/Samba identificado nas portas 139 e 445.
+- [x] Consulta de compartilhamentos com `smbclient` documentada.
+- [x] Login FTP anônimo documentado como permitido nas verificações registradas.
 
-- [x] Máquinas virtuais configuradas no VirtualBox.
-- [x] Rede Host-Only preparada.
-- [x] Comunicação entre Kali (`192.168.56.20`) e Metasploitable 2 (`192.168.56.10`) testada.
-- [x] Ajuda do Medusa consultada com `medusa -h`.
-- [x] Módulos FTP e SMBNT consultados.
-- [x] Resultados dos testes FTP e SMB interpretados e registrados neste documento.
+### Testes controlados com Medusa
 
-## Pendências de documentação
+**FTP — resultado registrado**
 
-- [ ] Capturar a configuração detalhada da rede Host-Only no VirtualBox.
-- [ ] Registrar separadamente o contexto da tentativa SMB anterior que exibiu `NT_STATUS_LOGON_FAILURE`.
-- [ ] Revisar as 19 imagens existentes e associar cada uma a uma etapa, sem inventar descrições.
-- [ ] Adicionar capturas sanitizadas das execuções Medusa FTP e SMB, se disponíveis.
-- [ ] Escrever a conclusão final e as recomendações defensivas.
+O comando documentado em [Ferramentas utilizadas](ferramentas.md) direcionou o módulo FTP do Medusa ao host de laboratório na porta 21, usando uma lista local de candidatos, uma tarefa simultânea e interrupção após encontrar uma conta válida. A saída compartilhada reportou `ACCOUNT FOUND: [ftp]` e `[SUCCESS]` para o usuário de laboratório `msfadmin`.
 
-## Padrão de registro
+- [x] Comando e parâmetros descritos.
+- [x] Resultado reportado transcrito sem divulgar a senha.
+- [ ] Captura específica da execução ainda não incluída.
 
-Para cada evidência, incluir:
+**SMB — resultado registrado**
 
-- **Arquivo:** nome da captura ou registro.
-- **Etapa:** fase do procedimento.
-- **Descrição:** o que a imagem ou saída demonstra.
-- **Resultado:** observação objetiva, sem expor credenciais.
+O comando documentado em [Ferramentas utilizadas](ferramentas.md) direcionou o módulo `smbnt` do Medusa ao host de laboratório na porta 445. A saída compartilhada reportou `ACCOUNT FOUND: [smbnt]` e `SUCCESS (ADMIN$ - Access Allowed)` para o usuário de laboratório `msfadmin`.
 
-## Privacidade e segurança
+- [x] Comando e parâmetros descritos.
+- [x] Resultado reportado transcrito sem divulgar a senha.
+- [ ] Captura específica da execução ainda não incluída.
 
-As saídas originais do Medusa exibiram senhas em texto claro. Não reproduzir essas senhas no repositório. Antes de publicar capturas, ocultar senhas, hashes, tokens, chaves e quaisquer dados pessoais que não sejam necessários para demonstrar o aprendizado.
+## Pendências antes da entrega
 
-Não incluir credenciais válidas ou dados de terceiros no repositório. Os procedimentos descritos se limitam ao laboratório próprio e autorizado.
+- [ ] Confirmar se as capturas específicas do Medusa FTP e SMB podem ser recuperadas.
+- [ ] Conferir os requisitos exatos do desafio/plataforma de avaliação.
+- [ ] Revisar ortografia, links internos e visualização do README no GitHub.
+
+## Como registrar uma nova evidência
+
+Para cada nova captura, registrar:
+
+1. **Arquivo:** nome exato do arquivo versionado.
+2. **Etapa:** fase do laboratório a que pertence.
+3. **Objetivo:** o que se pretendia verificar.
+4. **Observação:** o que a captura efetivamente demonstra.
+5. **Resultado:** saída observada, sem inferências não comprovadas.
+6. **Proteção:** confirmar que não há senhas, hashes, tokens ou dados pessoais expostos.
+
+## Nota de segurança
+
+As saídas originais do Medusa podem exibir senhas em texto claro. Não as reproduza em documentação, commits ou imagens públicas. Mantenha os testes restritos ao laboratório próprio e autorizado.

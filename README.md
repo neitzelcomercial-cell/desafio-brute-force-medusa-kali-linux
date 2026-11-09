@@ -1,55 +1,72 @@
-# Desafio: Brute Force com Medusa no Kali Linux
+# Desafio: Auditoria de autenticação com Medusa no Kali Linux
 
-Projeto prático de cibersegurança desenvolvido para documentar, de forma didática e reproduzível, o estudo de autenticação e auditoria de senhas com Kali Linux e Medusa.
+Projeto prático de cibersegurança que documenta um laboratório controlado para estudar autenticação de serviços de rede e auditoria de senhas com Kali Linux, Medusa e Metasploitable 2.
 
-> **Uso autorizado:** todas as atividades práticas devem ocorrer exclusivamente em laboratório próprio ou em sistemas para os quais exista autorização explícita. Não utilize estas técnicas contra serviços ou contas de terceiros.
+> **Escopo autorizado:** todos os procedimentos descritos foram direcionados ao laboratório privado do projeto. Não execute testes de autenticação contra sistemas, serviços ou contas de terceiros sem autorização explícita.
 
 ## Objetivos
 
-- Compreender os conceitos de autenticação, serviços de rede e auditoria de senhas.
-- Registrar a preparação do laboratório e as ferramentas utilizadas.
-- Documentar os procedimentos, resultados e aprendizados com evidências.
-- Apresentar o desafio de forma organizada para avaliação e consulta futura.
+- Preparar e descrever um laboratório isolado.
+- Identificar serviços de rede com Nmap.
+- Compreender a enumeração básica de FTP e SMB.
+- Registrar testes controlados de autenticação com Medusa.
+- Interpretar resultados e propor medidas defensivas.
+- Manter evidências organizadas sem publicar senhas ou outros segredos.
 
-## Ferramentas e ambiente
+## Ambiente e ferramentas
 
-- Kali Linux
-- Medusa 2.3
-- Nmap
-- Metasploitable 2 em rede Host-Only
-
-## Resultados práticos
-
-Os testes realizados no laboratório reportaram autenticação válida para o usuário de laboratório `msfadmin` nos seguintes serviços:
-
-| Serviço | Alvo | Resultado reportado |
-|---|---|---|
-| FTP | `192.168.56.10:21` | Medusa reportou `ACCOUNT FOUND` / `SUCCESS` |
-| SMB | `192.168.56.10:445` | Medusa reportou `ACCOUNT FOUND` / `ADMIN$ - Access Allowed` |
-
-As senhas foram omitidas da documentação. Consulte `docs/ferramentas.md` para os comandos, explicação dos parâmetros e interpretação dos resultados, e `docs/evidencias.md` para o acompanhamento das evidências e pendências.
-
-## Estrutura da documentação
-
-| Caminho | Conteúdo |
+| Componente | Registro do projeto |
 |---|---|
-| `docs/ambiente-laboratorio.md` | Topologia, máquinas, endereços e configuração do laboratório |
-| `docs/ferramentas.md` | Conceitos, comandos e resultados das ferramentas |
-| `docs/evidencias.md` | Capturas, resultados e observações |
-| `evidencias/` | Capturas preservadas e organizadas cronologicamente |
+| Virtualização | Oracle VirtualBox |
+| Estação de análise | Kali Linux — `192.168.56.20` |
+| Alvo de laboratório | Metasploitable 2 — `192.168.56.10` |
+| Rede | Host-Only |
+| Auditoria de serviços | Nmap |
+| Testes controlados de autenticação | Medusa 2.3 |
+| Clientes de serviço | smbclient e cliente FTP |
 
-## Estado do projeto
+## Resultados registrados
 
-- [x] Repositório e estrutura inicial criados.
-- [x] Ambiente de laboratório e conectividade documentados.
-- [x] Reconhecimento de serviços FTP e SMB realizado.
-- [x] Teste controlado do Medusa no FTP concluído.
-- [x] Teste controlado do Medusa no SMB concluído.
-- [x] Resultados documentados sem reproduzir senhas.
-- [ ] Anexar capturas sanitizadas das execuções, se disponíveis.
-- [ ] Revisar e legendar as evidências existentes.
-- [ ] Revisar a documentação final para entrega.
+Os registros de execução compartilhados durante o desenvolvimento indicam resultados positivos do Medusa para a conta de laboratório `msfadmin`:
 
-## Contexto acadêmico
+| Serviço | Destino | Resultado registrado |
+|---|---|---|
+| FTP | `192.168.56.10:21` | Medusa reportou `ACCOUNT FOUND` e `SUCCESS` |
+| SMB/SMBNT | `192.168.56.10:445` | Medusa reportou `ACCOUNT FOUND` e `ADMIN$ - Access Allowed` |
 
-Projeto de estudo associado ao desafio prático de cibersegurança da DIO.
+Esses resultados descrevem as saídas observadas no laboratório. Não representam validação em outros ambientes. Senhas foram deliberadamente omitidas.
+
+## Estrutura do repositório
+
+| Caminho | Descrição |
+|---|---|
+| `README.md` | Visão geral, escopo e estado do projeto |
+| `docs/ambiente-laboratorio.md` | Máquinas virtuais, rede e serviços identificados |
+| `docs/ferramentas.md` | Ferramentas, comandos, parâmetros e interpretação |
+| `docs/evidencias.md` | Matriz de evidências, resultados e pendências |
+| `evidencias/` | Cinco capturas selecionadas e índice |
+
+## Estado da documentação
+
+- [x] Repositório e documentação inicial criados.
+- [x] Ambiente Kali/Metasploitable e endereços registrados.
+- [x] Conectividade entre as máquinas documentada.
+- [x] Reconhecimento de serviços com Nmap documentado.
+- [x] Enumeração FTP e SMB documentada.
+- [x] Resultados reportados dos testes Medusa FTP e SMB registrados.
+- [x] Revisão visual das capturas originais concluída.
+- [x] Cinco capturas relevantes mantidas; imagens redundantes ou sem valor comprobatório removidas da versão de revisão.
+- [ ] Anexar capturas específicas das execuções Medusa FTP e SMB, se ainda disponíveis.
+- [ ] Fazer a revisão final das exigências específicas da plataforma/atividade antes da submissão.
+
+## Documentação complementar
+
+Comece por [Ambiente de laboratório](docs/ambiente-laboratorio.md), consulte [Ferramentas utilizadas](docs/ferramentas.md) e depois [Evidências e resultados](docs/evidencias.md). O índice das capturas está em [evidencias/README.md](evidencias/README.md).
+
+## Conclusão
+
+O projeto registra um fluxo de laboratório que vai da preparação da rede e identificação de serviços à análise controlada de autenticação em FTP e SMB. A principal lição defensiva é que serviços expostos, credenciais fracas e compartilhamentos administrativos acessíveis ampliam a superfície de ataque. Em ambientes reais, devem ser adotadas senhas fortes e únicas, limitação e monitoramento de tentativas, segmentação de rede, controle de privilégios e desativação de serviços legados desnecessários.
+
+## Uso responsável
+
+Use estas técnicas somente em laboratório próprio ou em sistemas com autorização explícita. Não publique senhas, hashes, tokens, chaves privadas ou dados pessoais nas evidências.

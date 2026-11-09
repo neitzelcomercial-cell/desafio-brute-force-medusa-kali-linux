@@ -17,35 +17,63 @@ Descrever as máquinas virtuais, a rede de laboratório e os serviços disponibi
 | IP do alvo | `192.168.56.10` |
 | Rede | Host-Only (rede privada do laboratório) |
 
-Os endereços acima foram registrados durante a configuração e os testes anteriores do laboratório. Recomenda-se anexar as capturas originais da configuração de rede como evidência final.
+As capturas mostram as interfaces `eth0` ativas no Kali e no Metasploitable. No teste de conectividade, o Kali recebeu 4 respostas de 4 pacotes enviados ao alvo, com 0% de perda. A tela do VirtualBox também mostra os discos virtuais associados às máquinas, incluindo arquivos do Metasploitable.
 
-## Serviços identificados
+## Serviços identificados pelo Nmap
 
-Em uma saída de reconhecimento anteriormente registrada, foram observados:
+A captura do reconhecimento de serviços no host `192.168.56.10` mostra o host ativo e diversas portas abertas. Entre os serviços legíveis na evidência:
 
-| Porta | Serviço | Versão/identificação |
+| Porta | Serviço | Identificação exibida |
 |---|---|---|
 | 21/tcp | FTP | vsftpd 2.3.4 |
-| 445/tcp | SMB (NetBIOS/SMB) | Samba smbd 3.X–4.X |
+| 22/tcp | SSH | OpenSSH 4.7p1 Debian 8ubuntu1 |
+| 23/tcp | Telnet | Linux telnetd |
+| 25/tcp | SMTP | Postfix smtpd |
+| 53/tcp | DNS | ISC BIND 9.4.2 |
+| 80/tcp | HTTP | Apache httpd 2.2.8 (Ubuntu) DAV/2 |
+| 111/tcp | RPC | rpcbind 2 |
+| 139/tcp | SMB | Samba smbd 3.X–4.X |
+| 445/tcp | SMB | Samba smbd 3.X–4.X |
+| 512/tcp | exec | netkit-rsh rexecd |
+| 513/tcp | login | OpenBSD/Solaris rlogind |
+| 514/tcp | shell | Netkit rshd |
+| 1099/tcp | Java RMI | GNU Classpath grmiregistry |
+| 1524/tcp | bindshell | Metasploitable root shell |
+| 2049/tcp | NFS | nfs |
+| 2121/tcp | FTP | ProFTPD 1.3.1 |
+| 3306/tcp | MySQL | MySQL 5.0.51a-3ubuntu5 |
+| 5432/tcp | PostgreSQL | PostgreSQL DB 8.3.0–8.3.7 |
+| 5900/tcp | VNC | VNC protocol 3.3 |
+| 6000/tcp | X11 | access denied |
+| 6667/tcp | IRC | UnrealIRCd |
+| 8009/tcp | AJP13 | Apache Jserv (Protocol v1.3) |
+| 8180/tcp | HTTP | Apache Tomcat/Coyote JSP engine 1.1 |
 
-Também houve referência anterior a ProFTPD 1.3.1 durante a exploração das informações de FTP. A relação exata dessa versão com a saída principal precisa ser conferida na captura original antes de consolidar o inventário.
+A captura adicional mostra uma verificação específica da porta 21, confirmando `vsftpd 2.3.4`. Portanto, os registros de FTP devem distinguir o serviço da porta 21 (vsftpd) do serviço da porta 2121 (ProFTPD).
+
+## SMB e compartilhamentos
+
+Foi executado `smbclient -L //192.168.56.10 -U msfadmin`. A captura exibe os compartilhamentos `print$`, `tmp`, `opt`, `IPC$`, `ADMIN$` e `msfadmin`, além do grupo de trabalho `WORKGROUP` e do servidor `METASPLOITABLE`. Outra captura mostra uma listagem de diretório no prompt do cliente SMB. Uma tentativa anterior apresentou `NT_STATUS_LOGON_FAILURE`; a documentação não deve tratar toda tentativa de autenticação como bem-sucedida.
 
 ## Procedimentos já realizados
 
 - Máquinas virtuais preparadas no VirtualBox.
 - Rede privada Host-Only configurada.
-- Comunicação entre as máquinas testada.
+- Interfaces de rede `eth0` observadas como ativas.
+- Comunicação entre as máquinas testada com ping (4 respostas, 0% de perda).
 - Reconhecimento com Nmap realizado.
-- Serviços FTP e SMB identificados.
-- Conexão ao serviço FTP estabelecida.
-- Login FTP anônimo aceito no laboratório.
+- Serviços FTP, SMB e outros serviços identificados.
+- Consulta específica à porta 21 realizada com Nmap.
+- Enumeração de compartilhamentos SMB realizada.
+- Conexão ao serviço FTP estabelecida em etapa anterior.
+- Login FTP anônimo aceito no laboratório em etapa anterior.
 
 ## Itens a confirmar ou complementar
 
-- Captura da configuração Host-Only no VirtualBox.
-- Saída completa do Nmap, incluindo data e parâmetros utilizados.
-- Confirmação da versão ProFTPD 1.3.1 e do contexto em que apareceu.
-- Detalhes da configuração da máquina Metasploitable 2.
+- Captura detalhada das configurações da rede Host-Only no VirtualBox.
+- Guardar a linha completa do comando Nmap usado no reconhecimento amplo; a captura mostra o resultado, mas não o comando inteiro.
+- Registrar separadamente os comandos e resultados completos do cliente SMB.
+- Anexar evidências específicas da sessão FTP e da autenticação anônima, se disponíveis.
 
 ## Observações de segurança
 

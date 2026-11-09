@@ -14,30 +14,41 @@ Projeto prático de cibersegurança desenvolvido para documentar, de forma didá
 ## Ferramentas e ambiente
 
 - Kali Linux
-- Medusa
+- Medusa 2.3
 - Nmap
-- Máquinas virtuais e rede de laboratório (detalhes a confirmar com as evidências do projeto)
+- Metasploitable 2 em rede Host-Only
+
+## Resultados práticos
+
+Os testes realizados no laboratório reportaram autenticação válida para o usuário de laboratório `msfadmin` nos seguintes serviços:
+
+| Serviço | Alvo | Resultado reportado |
+|---|---|---|
+| FTP | `192.168.56.10:21` | Medusa reportou `ACCOUNT FOUND` / `SUCCESS` |
+| SMB | `192.168.56.10:445` | Medusa reportou `ACCOUNT FOUND` / `ADMIN$ - Access Allowed` |
+
+As senhas foram omitidas da documentação. Consulte `docs/ferramentas.md` para os comandos, explicação dos parâmetros e interpretação dos resultados, e `docs/evidencias.md` para o acompanhamento das evidências e pendências.
 
 ## Estrutura da documentação
 
 | Caminho | Conteúdo |
 |---|---|
 | `docs/ambiente-laboratorio.md` | Topologia, máquinas, endereços e configuração do laboratório |
-| `docs/ferramentas.md` | Conceitos e utilização das ferramentas |
-| `docs/evidencias.md` | Capturas de tela, resultados e observações |
+| `docs/ferramentas.md` | Conceitos, comandos e resultados das ferramentas |
+| `docs/evidencias.md` | Capturas, resultados e observações |
+| `evidencias/` | Capturas preservadas e organizadas cronologicamente |
 
 ## Estado do projeto
 
-- [x] Repositório inicial criado.
-- [x] Estrutura de documentação planejada em uma branch separada.
-- [ ] Confirmar e registrar a configuração real do laboratório.
-- [ ] Documentar os comandos efetivamente executados.
-- [ ] Adicionar evidências e resultados observados.
-- [ ] Revisar a documentação para entrega.
-
-## Próximos passos
-
-A documentação será preenchida com base no que foi realmente configurado e executado. Informações ainda não confirmadas serão identificadas como pendentes, sem presumir endereços, versões ou resultados.
+- [x] Repositório e estrutura inicial criados.
+- [x] Ambiente de laboratório e conectividade documentados.
+- [x] Reconhecimento de serviços FTP e SMB realizado.
+- [x] Teste controlado do Medusa no FTP concluído.
+- [x] Teste controlado do Medusa no SMB concluído.
+- [x] Resultados documentados sem reproduzir senhas.
+- [ ] Anexar capturas sanitizadas das execuções, se disponíveis.
+- [ ] Revisar e legendar as evidências existentes.
+- [ ] Revisar a documentação final para entrega.
 
 ## Contexto acadêmico
 

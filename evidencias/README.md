@@ -4,15 +4,15 @@ As capturas abaixo foram analisadas durante a organização do desafio. Coloque 
 
 | Arquivo sugerido | O que demonstra |
 |---|---|
-| `01-virtualbox-discos.png` | Inventário de discos virtuais no VirtualBox; inclui discos do Kali e do Metasploitable. |
-| `02-metaspoloitable-rede.png` | Interface de rede do Metasploitable e estado da `eth0`. |
-| `03-kali-rede.png` | Interface de rede do Kali e estado da `eth0`. |
-| `04-nmap-servicos.png` | Reconhecimento amplo do host `192.168.56.10`, com portas e serviços identificados. |
-| `05-ping-e-porta-21.png` | Teste de conectividade e identificação de FTP na porta 21 com vsftpd 2.3.4. |
-| `06-nmap-listagem-completa.png` | Continuação da listagem de portas e identificação de ProFTPD 1.3.1 na porta 2121. |
-| `07-smb-compartilhamentos.png` | Consulta de compartilhamentos SMB com `smbclient -L`. |
-| `08-smb-listagem-diretorio.png` | Listagem apresentada no prompt interativo do SMB. |
-| `09-virtualbox-metadados.png` | Informações adicionais de armazenamento do disco virtual selecionado. |
+| `01-virtualbox-discos.png` | Inventário de discos virtuais no VirtualBox, incluindo discos do Kali e do Metasploitable. |
+| `02-virtualbox-disco-metadados.png` | Caminho e informações do disco virtual do Metasploitable selecionado. |
+| `03-metasploitable-rede.png` | Interface de rede do Metasploitable e estado da `eth0`. |
+| `04-kali-rede.png` | Interface de rede do Kali e estado da `eth0`. |
+| `05-nmap-reconhecimento-amplo.png` | Reconhecimento do host `192.168.56.10`, com portas e serviços identificados. |
+| `06-ping-e-nmap-porta-21.png` | Teste de conectividade e identificação de FTP na porta 21 com vsftpd 2.3.4. |
+| `07-nmap-servicos-adicionais.png` | Continuação da listagem de portas, incluindo ProFTPD 1.3.1 na porta 2121. |
+| `08-smb-compartilhamentos.png` | Consulta de compartilhamentos SMB com `smbclient -L`. |
+| `09-smb-listagem-diretorio.png` | Listagem apresentada no prompt interativo do SMB. |
 
 ## Observações
 

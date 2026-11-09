@@ -2,26 +2,36 @@
 
 ## Kali Linux
 
-Distribuição Linux utilizada como estação de análise no laboratório. O Kali foi configurado no VirtualBox com o endereço `192.168.56.20`.
+Distribuição Linux utilizada como estação de análise no laboratório. Nas capturas, a interface `eth0` aparece ativa. O endereço registrado para o Kali é `192.168.56.20`.
 
 ## Nmap
 
 Ferramenta de reconhecimento de rede usada para verificar o host de laboratório e identificar portas e serviços disponíveis.
 
-### Resultado já observado
+### Resultados observados
 
-No alvo `192.168.56.10`, uma saída registrada indicou:
+- O host `192.168.56.10` respondeu ao reconhecimento.
+- A verificação específica `nmap -sV -p 21 192.168.56.10` identificou `21/tcp` como FTP, `vsftpd 2.3.4`.
+- A captura do reconhecimento amplo mostra, entre outros, FTP em `21/tcp` (vsftpd 2.3.4), SMB em `139/tcp` e `445/tcp` (Samba smbd 3.X–4.X) e outro serviço FTP em `2121/tcp` (ProFTPD 1.3.1).
+- A captura ampla também lista serviços SSH, Telnet, SMTP, DNS, HTTP, RPC, NFS, MySQL, PostgreSQL, VNC, IRC e Tomcat.
 
-- `21/tcp`: FTP, vsftpd 2.3.4.
-- `445/tcp`: serviço SMB/Samba (smbd 3.X–4.X).
-
-A captura ou saída integral deverá ser anexada para preservar os parâmetros exatos do comando.
+As versões são transcritas conforme aparecem na captura de tela. Para reproduzir o levantamento, registrar também a linha completa do comando utilizado e a saída integral.
 
 ## Cliente FTP
 
-Foi estabelecida uma conexão FTP com o host de laboratório. O serviço aceitou autenticação anônima (`anonymous`). A sessão foi encerrada com o comando `bye`.
+Foi estabelecida uma conexão FTP com o host de laboratório em etapa anterior. O serviço aceitou autenticação anônima (`anonymous`). A sessão foi encerrada com o comando `bye`.
 
-Essa observação documenta o comportamento do serviço no laboratório; não representa uma recomendação de configuração para ambientes reais.
+O reconhecimento atual também diferencia dois serviços FTP: vsftpd na porta 21 e ProFTPD na porta 2121. Não presumir que ambos foram testados com o cliente FTP sem uma evidência específica de cada sessão.
+
+## SMB / smbclient
+
+Foi utilizada a ferramenta `smbclient` para consultar os compartilhamentos do host `192.168.56.10`, com o comando visível na captura:
+
+```bash
+smbclient -L //192.168.56.10 -U msfadmin
+```
+
+A listagem exibiu os compartilhamentos `print$`, `tmp`, `opt`, `IPC$`, `ADMIN$` e `msfadmin`, associados ao servidor `METASPLOITABLE` e ao grupo `WORKGROUP`. Há também uma captura de uma listagem de diretório no prompt interativo do SMB. Uma tentativa exibiu `NT_STATUS_LOGON_FAILURE`; por isso, registrar cada tentativa separadamente, sem generalizar o resultado.
 
 ## Medusa
 

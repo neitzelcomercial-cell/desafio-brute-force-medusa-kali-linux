@@ -13,7 +13,7 @@ Ferramenta de reconhecimento de rede usada para verificar o host de laboratório
 - O host `192.168.56.10` respondeu ao reconhecimento.
 - A verificação `nmap -sV -p 21,2121 192.168.56.10` mostrou as portas 21 e 2121 abertas. A identificação anterior apontou vsftpd 2.3.4 na porta 21 e ProFTPD 1.3.1 na porta 2121.
 - A verificação `nmap -sV -p 139,445 192.168.56.10` identificou Samba `smbd 3.X - 4.X` nas portas 139 e 445, no grupo `WORKGROUP`.
-- A captura do reconhecimento amplo também lista serviços SSH, Telnet, SMTP, DNS, HTTP, RPC, NFS, MySQL, PostgreSQL, VNC, IRC e Tomcat.
+- A saída textual do reconhecimento amplo também registrou serviços SSH, Telnet, SMTP, DNS, HTTP, RPC, NFS, MySQL, PostgreSQL, VNC, IRC e Tomcat. A imagem desse reconhecimento amplo não faz parte das cinco capturas preservadas.
 
 As versões são transcritas conforme apareceram nas saídas observadas. A identificação de serviço feita pelo Nmap pode ser genérica; por isso, não tratar o nome associado ao número da porta como confirmação isolada da versão do serviço.
 

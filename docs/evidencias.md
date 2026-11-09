@@ -4,7 +4,7 @@ Este documento separa as capturas efetivamente versionadas dos resultados de exe
 
 ## Inventário das capturas
 
-Após a revisão visual das 17 imagens originais, foram mantidas **5 capturas relevantes**. Os nomes e números originais foram preservados para manter a rastreabilidade. Consulte o [índice das evidências](../evidencias/README.md).
+Após a revisão visual das capturas originais, foram mantidas **5 capturas relevantes**. Os nomes e números originais foram preservados para manter a rastreabilidade. Consulte o [índice das evidências](../evidencias/README.md).
 
 As cinco imagens documentam:
 - conectividade entre Kali e Metasploitable 2 e verificação inicial do FTP;

@@ -1,34 +1,52 @@
 # Ambiente de laboratório
 
-Esta página registra a configuração real do laboratório utilizado no desafio.
+Esta página registra a configuração do laboratório utilizado no desafio, separando informações confirmadas de detalhes que ainda precisam de evidência.
 
 ## Objetivo
 
 Descrever as máquinas virtuais, a rede de laboratório e os serviços disponibilizados para os testes autorizados.
 
-## Inventário
+## Inventário confirmado
 
-| Item | Informação confirmada |
+| Item | Informação |
 |---|---|
-| Sistema de análise | Kali Linux |
-| Plataforma de virtualização | A confirmar |
-| Máquina de destino | A confirmar |
-| Rede utilizada | A confirmar |
-| Endereço IP do Kali | A confirmar |
-| Endereço IP do alvo | A confirmar |
+| Plataforma de virtualização | Oracle VirtualBox |
+| Máquina de análise | Kali Linux |
+| IP do Kali | `192.168.56.20` |
+| Máquina de destino | Metasploitable 2 |
+| IP do alvo | `192.168.56.10` |
+| Rede | Host-Only (rede privada do laboratório) |
+
+Os endereços acima foram registrados durante a configuração e os testes anteriores do laboratório. Recomenda-se anexar as capturas originais da configuração de rede como evidência final.
 
 ## Serviços identificados
 
-Os serviços e suas versões serão registrados após conferência das saídas originais dos comandos de reconhecimento.
+Em uma saída de reconhecimento anteriormente registrada, foram observados:
 
-| Porta | Serviço | Versão | Evidência |
-|---|---|---|---|
-| A preencher | A preencher | A preencher | A anexar |
+| Porta | Serviço | Versão/identificação |
+|---|---|---|
+| 21/tcp | FTP | vsftpd 2.3.4 |
+| 445/tcp | SMB (NetBIOS/SMB) | Samba smbd 3.X–4.X |
 
-## Procedimento de configuração
+Também houve referência anterior a ProFTPD 1.3.1 durante a exploração das informações de FTP. A relação exata dessa versão com a saída principal precisa ser conferida na captura original antes de consolidar o inventário.
 
-A preencher com os passos realmente executados, incluindo configurações de rede e inicialização das máquinas.
+## Procedimentos já realizados
 
-## Observações
+- Máquinas virtuais preparadas no VirtualBox.
+- Rede privada Host-Only configurada.
+- Comunicação entre as máquinas testada.
+- Reconhecimento com Nmap realizado.
+- Serviços FTP e SMB identificados.
+- Conexão ao serviço FTP estabelecida.
+- Login FTP anônimo aceito no laboratório.
 
-Não preencher dados por suposição. Confirmar endereços, versões e topologia nas capturas de tela ou saídas de terminal originais.
+## Itens a confirmar ou complementar
+
+- Captura da configuração Host-Only no VirtualBox.
+- Saída completa do Nmap, incluindo data e parâmetros utilizados.
+- Confirmação da versão ProFTPD 1.3.1 e do contexto em que apareceu.
+- Detalhes da configuração da máquina Metasploitable 2.
+
+## Observações de segurança
+
+Todos os testes devem permanecer restritos ao laboratório próprio e isolado ou a sistemas com autorização explícita. Não publicar senhas, tokens ou dados pessoais nas evidências.

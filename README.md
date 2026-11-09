@@ -44,7 +44,7 @@ Esses resultados descrevem as saídas observadas no laboratório. Não represent
 | `docs/ambiente-laboratorio.md` | Máquinas virtuais, rede e serviços identificados |
 | `docs/ferramentas.md` | Ferramentas, comandos, parâmetros e interpretação |
 | `docs/evidencias.md` | Matriz de evidências, resultados e pendências |
-| `evidencias/` | Capturas de tela numeradas e índice |
+| `evidencias/` | Cinco capturas selecionadas e índice |
 
 ## Estado da documentação
 
@@ -54,9 +54,9 @@ Esses resultados descrevem as saídas observadas no laboratório. Não represent
 - [x] Reconhecimento de serviços com Nmap documentado.
 - [x] Enumeração FTP e SMB documentada.
 - [x] Resultados reportados dos testes Medusa FTP e SMB registrados.
-- [x] 17 capturas preservadas e listadas no índice de evidências.
+- [x] Revisão visual das 17 capturas originais concluída.
+- [x] Cinco capturas relevantes mantidas; imagens redundantes ou sem valor comprobatório removidas da versão de revisão.
 - [ ] Anexar capturas específicas das execuções Medusa FTP e SMB, se ainda disponíveis.
-- [ ] Conferir visualmente cada imagem e remover qualquer dado sensível que eventualmente apareça.
 - [ ] Fazer a revisão final das exigências específicas da plataforma/atividade antes da submissão.
 
 ## Documentação complementar

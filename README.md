@@ -54,7 +54,7 @@ Esses resultados descrevem as saídas observadas no laboratório. Não represent
 - [x] Reconhecimento de serviços com Nmap documentado.
 - [x] Enumeração FTP e SMB documentada.
 - [x] Resultados reportados dos testes Medusa FTP e SMB registrados.
-- [x] Revisão visual das 17 capturas originais concluída.
+- [x] Revisão visual das capturas originais concluída.
 - [x] Cinco capturas relevantes mantidas; imagens redundantes ou sem valor comprobatório removidas da versão de revisão.
 - [ ] Anexar capturas específicas das execuções Medusa FTP e SMB, se ainda disponíveis.
 - [ ] Fazer a revisão final das exigências específicas da plataforma/atividade antes da submissão.

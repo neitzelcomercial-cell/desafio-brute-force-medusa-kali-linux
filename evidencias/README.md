@@ -1,6 +1,6 @@
 # Índice de evidências do laboratório
 
-Após a revisão visual das 17 capturas originais, foram mantidas somente as **5 imagens que acrescentam evidência técnica direta** ao fluxo de reconhecimento e enumeração. Os números originais dos arquivos foram preservados para manter a rastreabilidade.
+Após a revisão visual das capturas originais, foram mantidas somente as **5 imagens que acrescentam evidência técnica direta** ao fluxo de reconhecimento e enumeração. Os números originais dos arquivos foram preservados para manter a rastreabilidade.
 
 | Arquivo | Etapa documentada |
 |---|---|

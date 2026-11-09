@@ -11,42 +11,73 @@ Ferramenta de reconhecimento de rede usada para verificar o host de laboratório
 ### Resultados observados
 
 - O host `192.168.56.10` respondeu ao reconhecimento.
-- A verificação específica `nmap -sV -p 21 192.168.56.10` identificou `21/tcp` como FTP, `vsftpd 2.3.4`.
-- A captura do reconhecimento amplo mostra, entre outros, FTP em `21/tcp` (vsftpd 2.3.4), SMB em `139/tcp` e `445/tcp` (Samba smbd 3.X–4.X) e outro serviço FTP em `2121/tcp` (ProFTPD 1.3.1).
-- A captura ampla também lista serviços SSH, Telnet, SMTP, DNS, HTTP, RPC, NFS, MySQL, PostgreSQL, VNC, IRC e Tomcat.
+- A verificação `nmap -sV -p 21,2121 192.168.56.10` mostrou as portas 21 e 2121 abertas. A identificação anterior apontou vsftpd 2.3.4 na porta 21 e ProFTPD 1.3.1 na porta 2121.
+- A verificação `nmap -sV -p 139,445 192.168.56.10` identificou Samba `smbd 3.X - 4.X` nas portas 139 e 445, no grupo `WORKGROUP`.
+- A captura do reconhecimento amplo também lista serviços SSH, Telnet, SMTP, DNS, HTTP, RPC, NFS, MySQL, PostgreSQL, VNC, IRC e Tomcat.
 
-As versões são transcritas conforme aparecem na captura de tela. Para reproduzir o levantamento, registrar também a linha completa do comando utilizado e a saída integral.
+As versões são transcritas conforme apareceram nas saídas observadas. A identificação de serviço feita pelo Nmap pode ser genérica; por isso, não tratar o nome associado ao número da porta como confirmação isolada da versão do serviço.
 
 ## Cliente FTP
 
-Foi estabelecida uma conexão FTP com o host de laboratório em etapa anterior. O serviço aceitou autenticação anônima (`anonymous`). A sessão foi encerrada com o comando `bye`.
+Foi estabelecida uma conexão FTP com o host de laboratório em etapa anterior. O serviço aceitou autenticação anônima (`anonymous`). Em uma validação manual posterior, o usuário de laboratório `msfadmin` também conseguiu autenticar na porta 21. A sessão foi encerrada com `bye`.
 
-O reconhecimento atual também diferencia dois serviços FTP: vsftpd na porta 21 e ProFTPD na porta 2121. Não presumir que ambos foram testados com o cliente FTP sem uma evidência específica de cada sessão.
+O reconhecimento diferencia dois serviços FTP: vsftpd na porta 21 e ProFTPD na porta 2121. Não há evidência de que ambos tenham sido testados com o cliente FTP.
 
 ## SMB / smbclient
 
-Foi utilizada a ferramenta `smbclient` para consultar os compartilhamentos do host `192.168.56.10`, com o comando visível na captura:
+Foi utilizada a ferramenta `smbclient` para consultar os compartilhamentos do host `192.168.56.10`, com o comando:
 
 ```bash
 smbclient -L //192.168.56.10 -U msfadmin
 ```
 
-A listagem exibiu os compartilhamentos `print$`, `tmp`, `opt`, `IPC$`, `ADMIN$` e `msfadmin`, associados ao servidor `METASPLOITABLE` e ao grupo `WORKGROUP`. Há também uma captura de uma listagem de diretório no prompt interativo do SMB. Uma tentativa exibiu `NT_STATUS_LOGON_FAILURE`; por isso, registrar cada tentativa separadamente, sem generalizar o resultado.
+A listagem exibiu os compartilhamentos `print$`, `tmp`, `opt`, `IPC$`, `ADMIN$` e `msfadmin`, associados ao servidor `METASPLOITABLE` e ao grupo `WORKGROUP`. Uma tentativa anterior exibiu `NT_STATUS_LOGON_FAILURE`; esse resultado deve ser mantido separado dos testes posteriores, sem generalizar o resultado de todas as tentativas.
 
 ## Medusa
 
-Medusa é uma ferramenta de auditoria de autenticação compatível com diferentes módulos de serviço.
+Medusa 2.3 foi utilizado no laboratório para avaliar autenticação nos serviços FTP e SMB. O módulo FTP foi consultado e o módulo `smbnt` 3.0 foi identificado.
 
-### Progresso confirmado
+### Teste FTP — resultado observado
 
-- O comando de ajuda `medusa -h` foi executado para conhecer as opções disponíveis.
-- Foi iniciada a exploração da documentação e dos módulos.
-- Houve preparação inicial de uma wordlist para o cenário FTP.
-- Não há registro confirmado de uma execução de tentativa de autenticação com Medusa contra o serviço. Portanto, nenhum resultado de brute force deve ser declarado como concluído.
+Comando executado:
 
-### Próximos registros
+```bash
+medusa -h 192.168.56.10 -u msfadmin -P ~/ftp_senhas.txt -M ftp -n 21 -t 1 -f
+```
 
-Quando houver evidência, documentar o comando usado, o significado dos parâmetros, o serviço do laboratório, o resultado observado e as medidas de contenção. Os testes devem ser limitados ao ambiente autorizado.
+Significado dos parâmetros:
+
+- `-h`: endereço do host de laboratório.
+- `-u`: usuário informado para o teste.
+- `-P`: caminho do arquivo de candidatos a senha.
+- `-M ftp`: seleciona o módulo FTP.
+- `-n 21`: seleciona a porta TCP 21.
+- `-t 1`: limita a execução a uma tarefa simultânea.
+- `-f`: interrompe a execução após encontrar uma conta válida.
+
+Resultado reportado pelo Medusa: `ACCOUNT FOUND: [ftp]` e `[SUCCESS]` para o usuário de laboratório `msfadmin` no host `192.168.56.10`. A saída original continha a senha em texto claro; ela foi omitida desta documentação para evitar exposição de credenciais.
+
+### Teste SMB — resultado observado
+
+Antes do teste, o comando `nmap -sV -p 139,445 192.168.56.10` confirmou Samba nas portas 139 e 445.
+
+Comando executado:
+
+```bash
+medusa -h 192.168.56.10 -u msfadmin -P ~/ftp_senhas.txt -M smbnt -n 445 -t 1 -f
+```
+
+Significado dos parâmetros: os mesmos parâmetros de host, usuário, wordlist, concorrência e parada antecipada descritos no teste FTP; `-M smbnt` seleciona o módulo SMBNT e `-n 445` seleciona a porta TCP 445.
+
+Resultado reportado pelo Medusa: `ACCOUNT FOUND: [smbnt]` com `SUCCESS (ADMIN$ - Access Allowed)` para o usuário de laboratório `msfadmin` no host `192.168.56.10`. Isso indica que o módulo reportou autenticação válida e acesso permitido ao compartilhamento administrativo `ADMIN$` durante sua verificação. A saída original continha a senha em texto claro; ela foi omitida desta documentação.
+
+### Limites e cuidados
+
+- Os testes foram direcionados ao Metasploitable 2 do laboratório isolado e autorizado.
+- A wordlist utilizada tinha três entradas; seu conteúdo não é reproduzido aqui.
+- O resultado descreve o que o Medusa reportou no ambiente de laboratório, não uma garantia de acesso equivalente em outros sistemas.
+- Não publicar senhas, hashes, tokens ou outros segredos em capturas, logs ou no repositório.
+- Em ambientes reais, preferir autenticação forte, limitar tentativas, monitorar falhas de login, restringir compartilhamentos administrativos e desabilitar protocolos/versões legados quando possível.
 
 ## Padrão para documentar comandos
 

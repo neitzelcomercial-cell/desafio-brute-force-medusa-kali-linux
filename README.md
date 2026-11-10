@@ -1,72 +1,95 @@
-# Desafio: Auditoria de autenticação com Medusa no Kali Linux
+# Desafio DIO: auditoria de autenticação com Kali Linux e Medusa
 
-Projeto prático de cibersegurança que documenta um laboratório controlado para estudar autenticação de serviços de rede e auditoria de senhas com Kali Linux, Medusa e Metasploitable 2.
+Projeto educacional de cibersegurança desenvolvido em laboratório virtual controlado, como atividade prática da DIO. O objetivo é compreender tentativas de autenticação em serviços de rede, analisar respostas de aplicações e registrar medidas de prevenção.
 
-> **Escopo autorizado:** todos os procedimentos descritos foram direcionados ao laboratório privado do projeto. Não execute testes de autenticação contra sistemas, serviços ou contas de terceiros sem autorização explícita.
+> **Uso autorizado:** os testes descritos foram realizados em máquinas virtuais próprias, em rede Host-Only. Não execute técnicas de tentativa de senha em sistemas ou contas de terceiros sem autorização explícita.
 
 ## Objetivos
 
-- Preparar e descrever um laboratório isolado.
-- Identificar serviços de rede com Nmap.
-- Compreender a enumeração básica de FTP e SMB.
-- Registrar testes controlados de autenticação com Medusa.
-- Interpretar resultados e propor medidas defensivas.
-- Manter evidências organizadas sem publicar senhas ou outros segredos.
+- Preparar um laboratório com Kali Linux e Metasploitable 2.
+- Verificar conectividade e identificar serviços com Nmap.
+- Estudar autenticação FTP e SMB com Medusa.
+- Observar o comportamento de um formulário web vulnerável no DVWA.
+- Distinguir brute force, password spraying e validação manual.
+- Documentar resultados, limitações e recomendações defensivas.
 
-## Ambiente e ferramentas
+## Ambiente utilizado
 
-| Componente | Registro do projeto |
+| Componente | Configuração registrada |
 |---|---|
 | Virtualização | Oracle VirtualBox |
-| Estação de análise | Kali Linux — `192.168.56.20` |
-| Alvo de laboratório | Metasploitable 2 — `192.168.56.10` |
+| Estação de análise | Kali Linux — `192.168.56.10` |
+| Alvo | Metasploitable 2 — `192.168.56.101` |
 | Rede | Host-Only |
-| Auditoria de serviços | Nmap |
-| Testes controlados de autenticação | Medusa 2.3 |
-| Clientes de serviço | smbclient e cliente FTP |
+| Aplicação web | DVWA hospedado no ambiente de laboratório |
+| Ferramentas | Medusa 2.3, Nmap, smbclient, Firefox/DevTools |
 
-## Resultados registrados
+**Nota histórica sobre os endereços:** os primeiros registros e comandos de Medusa foram feitos quando a documentação identificava Kali como `192.168.56.20` e Metasploitable como `192.168.56.10`. Posteriormente, a configuração confirmada passou a ser Kali `192.168.56.10` e Metasploitable `192.168.56.101`. Por isso, os comandos históricos de FTP/SMB abaixo mantêm o endereço que constava no momento do teste; não se deve interpretar esse endereço como o IP atual do alvo.
 
-Os registros de execução compartilhados durante o desenvolvimento indicam resultados positivos do Medusa para a conta de laboratório `msfadmin`:
+## Resultados e escopo
 
-| Serviço | Destino | Resultado registrado |
+### Ambiente e reconhecimento
+
+- Conectividade entre as VMs confirmada por ping.
+- Rede Host-Only utilizada para manter o laboratório isolado.
+- Nmap utilizado para identificar serviços FTP e SMB no Metasploitable 2.
+- Compartilhamentos SMB consultados com `smbclient`.
+
+### Medusa — FTP e SMB
+
+Os registros de execução compartilhados durante o desenvolvimento indicaram:
+
+| Serviço | Módulo | Resultado registrado |
 |---|---|---|
-| FTP | `192.168.56.10:21` | Medusa reportou `ACCOUNT FOUND` e `SUCCESS` |
-| SMB/SMBNT | `192.168.56.10:445` | Medusa reportou `ACCOUNT FOUND` e `ADMIN$ - Access Allowed` |
+| FTP | `ftp` | Medusa reportou `ACCOUNT FOUND` e `SUCCESS` para a conta de laboratório `msfadmin`. |
+| SMB | `smbnt` | Medusa reportou `ACCOUNT FOUND` e `SUCCESS (ADMIN$ - Access Allowed)` para a conta de laboratório `msfadmin`. |
 
-Esses resultados descrevem as saídas observadas no laboratório. Não representam validação em outros ambientes. Senhas foram deliberadamente omitidas.
+Os comandos históricos e a interpretação dos resultados estão em [Ferramentas utilizadas](docs/ferramentas.md). As saídas originais continham credenciais em texto claro, omitidas desta documentação.
+
+**Limite de classificação:** o teste SMB registrado utilizou um usuário e uma lista de senhas. Isso caracteriza tentativa de senhas contra uma conta, não demonstra por si só password spraying. A enumeração de compartilhamentos com `smbclient` também não equivale à enumeração de usuários. O projeto não afirma que essas duas etapas específicas do cenário corporativo foram concluídas.
+
+### DVWA — formulário Brute Force
+
+O módulo Brute Force do DVWA foi testado manualmente com a segurança configurada como Low:
+
+| Usuário | Senha de teste | Resultado observado |
+|---|---|---|
+| `admin` | senha incorreta de teste | A aplicação informou credenciais incorretas. |
+| `admin` | credencial padrão do laboratório | A aplicação exibiu a mensagem de boas-vindas. |
+
+No DevTools/Network, a requisição do módulo Brute Force foi observada como **GET**, com os campos `username`, `password` e `Login`, e resposta HTTP `200 OK`. O código 200 indica que a página respondeu; a validação do login foi feita pela mensagem exibida pela aplicação.
+
+**Importante:** esses foram testes manuais. Não foi concluída uma execução automatizada de brute force contra o formulário DVWA. A consulta `medusa -M http -q` mostrou que o módulo HTTP disponível documenta autenticação BASIC, DIGEST e NTLM, além de método e cabeçalhos; isso não comprova suporte direto ao formulário web do DVWA. A análise está em [DVWA — formulário web](docs/dvwa-formulario-web.md).
 
 ## Estrutura do repositório
 
-| Caminho | Descrição |
+| Caminho | Conteúdo |
 |---|---|
-| `README.md` | Visão geral, escopo e estado do projeto |
-| `docs/ambiente-laboratorio.md` | Máquinas virtuais, rede e serviços identificados |
-| `docs/ferramentas.md` | Ferramentas, comandos, parâmetros e interpretação |
-| `docs/evidencias.md` | Matriz de evidências, resultados e pendências |
-| `evidencias/` | Cinco capturas selecionadas e índice |
+| `README.md` | Visão geral, escopo e resultados |
+| `docs/ambiente-laboratorio.md` | Máquinas virtuais, rede e serviços |
+| `docs/ferramentas.md` | Ferramentas, comandos históricos e interpretação |
+| `docs/dvwa-formulario-web.md` | Teste manual do DVWA e limitação do módulo HTTP |
+| `docs/evidencias.md` | Inventário e limites das evidências |
+| `evidencias/` | Capturas selecionadas e índice |
 
-## Estado da documentação
+## Evidências
 
-- [x] Repositório e documentação inicial criados.
-- [x] Ambiente Kali/Metasploitable e endereços registrados.
-- [x] Conectividade entre as máquinas documentada.
-- [x] Reconhecimento de serviços com Nmap documentado.
-- [x] Enumeração FTP e SMB documentada.
-- [x] Resultados reportados dos testes Medusa FTP e SMB registrados.
-- [x] Revisão visual das capturas originais concluída.
-- [x] Cinco capturas relevantes mantidas; imagens redundantes ou sem valor comprobatório removidas da versão de revisão.
-- [ ] Anexar capturas específicas das execuções Medusa FTP e SMB, se ainda disponíveis.
-- [ ] Fazer a revisão final das exigências específicas da plataforma/atividade antes da submissão.
+Cinco capturas foram preservadas para documentar conectividade, reconhecimento e enumeração FTP/SMB. Elas não incluem capturas específicas das execuções do Medusa nem do teste manual do DVWA. Os resultados dessas etapas são descritos como registros textuais compartilhados durante o desenvolvimento, não como imagens versionadas. Consulte [Evidências e resultados](docs/evidencias.md).
 
-## Documentação complementar
+## Recomendações de mitigação
 
-Comece por [Ambiente de laboratório](docs/ambiente-laboratorio.md), consulte [Ferramentas utilizadas](docs/ferramentas.md) e depois [Evidências e resultados](docs/evidencias.md). O índice das capturas está em [evidencias/README.md](evidencias/README.md).
+- Utilizar senhas longas, únicas e armazenadas em gerenciador de senhas.
+- Implementar MFA para contas e serviços críticos.
+- Aplicar limitação progressiva de tentativas, detecção de anomalias e alertas.
+- Monitorar falhas de autenticação e correlacionar eventos em logs centralizados.
+- Desabilitar FTP sem proteção e preferir SFTP ou FTPS.
+- Desabilitar SMBv1, restringir compartilhamentos administrativos e limitar acesso por firewall e segmentação.
+- Em aplicações web, aplicar rate limiting, proteção contra automação abusiva, MFA quando aplicável e controles de sessão adequados.
 
 ## Conclusão
 
-O projeto registra um fluxo de laboratório que vai da preparação da rede e identificação de serviços à análise controlada de autenticação em FTP e SMB. A principal lição defensiva é que serviços expostos, credenciais fracas e compartilhamentos administrativos acessíveis ampliam a superfície de ataque. Em ambientes reais, devem ser adotadas senhas fortes e únicas, limitação e monitoramento de tentativas, segmentação de rede, controle de privilégios e desativação de serviços legados desnecessários.
+O laboratório permitiu estudar reconhecimento de serviços, autenticação em FTP e SMB, interpretação de resultados do Medusa e comportamento de um formulário vulnerável no DVWA. Também evidenciou a importância de conhecer os limites de cada módulo: suporte HTTP genérico não significa suporte automático a qualquer formulário web. Os cenários não automatizados ou não comprovados foram identificados explicitamente, preservando a precisão técnica do relatório.
 
 ## Uso responsável
 
-Use estas técnicas somente em laboratório próprio ou em sistemas com autorização explícita. Não publique senhas, hashes, tokens, chaves privadas ou dados pessoais nas evidências.
+Todo o conteúdo é destinado a estudo em laboratório próprio e isolado ou a sistemas com autorização explícita. Não publique senhas, hashes, cookies, tokens ou dados pessoais.

@@ -2,90 +2,79 @@
 
 ## Kali Linux
 
-Distribuição Linux utilizada como estação de análise no laboratório. Durante a preparação do laboratório, a interface `eth0` foi observada ativa. O endereço registrado para o Kali é `192.168.56.20`.
+Distribuição utilizada como estação de análise. O endereço atual confirmado no laboratório é `192.168.56.10`.
 
 ## Nmap
 
-Ferramenta de reconhecimento de rede usada para verificar o host de laboratório e identificar portas e serviços disponíveis.
+Ferramenta de reconhecimento utilizada para verificar o host de laboratório e identificar portas e serviços.
 
-### Resultados observados
+Resultados registrados em etapas anteriores:
+- FTP na porta 21, identificado como vsftpd 2.3.4.
+- FTP na porta 2121, identificado como ProFTPD 1.3.1.
+- SMB/Samba nas portas 139 e 445.
 
-- O host `192.168.56.10` respondeu ao reconhecimento.
-- A verificação `nmap -sV -p 21,2121 192.168.56.10` mostrou as portas 21 e 2121 abertas. A identificação anterior apontou vsftpd 2.3.4 na porta 21 e ProFTPD 1.3.1 na porta 2121.
-- A verificação `nmap -sV -p 139,445 192.168.56.10` identificou Samba `smbd 3.X - 4.X` nas portas 139 e 445, no grupo `WORKGROUP`.
-- A saída textual do reconhecimento amplo também registrou serviços SSH, Telnet, SMTP, DNS, HTTP, RPC, NFS, MySQL, PostgreSQL, VNC, IRC e Tomcat. A imagem desse reconhecimento amplo não faz parte das cinco capturas preservadas.
-
-As versões são transcritas conforme apareceram nas saídas observadas. A identificação de serviço feita pelo Nmap pode ser genérica; por isso, não tratar o nome associado ao número da porta como confirmação isolada da versão do serviço.
+As versões são transcritas conforme as saídas observadas. A identificação do Nmap deve ser interpretada como resultado de detecção de serviço, não como garantia absoluta da versão.
 
 ## Cliente FTP
 
-Foi estabelecida uma conexão FTP com o host de laboratório em etapa anterior. O serviço aceitou autenticação anônima (`anonymous`). Em uma validação manual posterior, o usuário de laboratório `msfadmin` também conseguiu autenticar na porta 21. A sessão foi encerrada com `bye`.
-
-O reconhecimento diferencia dois serviços FTP: vsftpd na porta 21 e ProFTPD na porta 2121. Não há evidência de que ambos tenham sido testados com o cliente FTP.
+Foi registrada conexão FTP ao host de laboratório e autenticação anônima aceita em uma etapa anterior. Também foi relatada validação manual com uma conta de laboratório. Os registros devem ser associados à configuração de rede vigente no momento de cada teste.
 
 ## SMB / smbclient
 
-Foi utilizada a ferramenta `smbclient` para consultar os compartilhamentos do host `192.168.56.10`, com o comando:
+Foi utilizada a ferramenta `smbclient` para consultar compartilhamentos SMB. Uma listagem registrada apresentou compartilhamentos como `print$`, `tmp`, `opt`, `IPC$`, `ADMIN$` e `msfadmin`. Uma tentativa anterior retornou `NT_STATUS_LOGON_FAILURE`; esse resultado deve permanecer documentado como falha, sem generalizar o resultado de outras tentativas.
 
-```bash
-smbclient -L //192.168.56.10 -U msfadmin
-```
+## Medusa 2.3
 
-A listagem exibiu os compartilhamentos `print$`, `tmp`, `opt`, `IPC$`, `ADMIN$` e `msfadmin`, associados ao servidor `METASPLOITABLE` e ao grupo `WORKGROUP`. Uma tentativa anterior exibiu `NT_STATUS_LOGON_FAILURE`; esse resultado deve ser mantido separado dos testes posteriores, sem generalizar o resultado de todas as tentativas.
+O Medusa foi utilizado em testes históricos de autenticação FTP e SMB no laboratório. O endereço do alvo nos comandos abaixo é o que constava no registro original, quando Metasploitable era identificado como `192.168.56.10`. A configuração posterior passou a identificar Metasploitable como `192.168.56.101`; portanto, não reutilize o IP histórico como endereço atual.
 
-## Medusa
-
-Medusa 2.3 foi utilizado no laboratório para avaliar autenticação nos serviços FTP e SMB. O módulo FTP foi consultado e o módulo `smbnt` 3.0 foi identificado.
-
-### Teste FTP — resultado observado
-
-Comando executado:
+### Teste FTP — registro histórico
 
 ```bash
 medusa -h 192.168.56.10 -u msfadmin -P ~/ftp_senhas.txt -M ftp -n 21 -t 1 -f
 ```
 
-Significado dos parâmetros:
+Parâmetros:
+- `-h`: host que constava como alvo no momento do teste.
+- `-u`: usuário único informado.
+- `-P`: arquivo local de candidatos a senha.
+- `-M ftp`: módulo FTP.
+- `-n 21`: porta TCP 21.
+- `-t 1`: uma tarefa simultânea.
+- `-f`: interromper após encontrar uma conta válida.
 
-- `-h`: endereço do host de laboratório.
-- `-u`: usuário informado para o teste.
-- `-P`: caminho do arquivo de candidatos a senha.
-- `-M ftp`: seleciona o módulo FTP.
-- `-n 21`: seleciona a porta TCP 21.
-- `-t 1`: limita a execução a uma tarefa simultânea.
-- `-f`: interrompe a execução após encontrar uma conta válida.
+Resultado reportado na saída compartilhada: `ACCOUNT FOUND: [ftp]` e `[SUCCESS]` para a conta de laboratório `msfadmin`. A senha foi omitida. A saída específica não está entre as cinco capturas atualmente versionadas.
 
-Resultado reportado pelo Medusa: `ACCOUNT FOUND: [ftp]` e `[SUCCESS]` para o usuário de laboratório `msfadmin` no host `192.168.56.10`. A saída original continha a senha em texto claro; ela foi omitida desta documentação para evitar exposição de credenciais.
-
-### Teste SMB — resultado observado
-
-Antes do teste, o comando `nmap -sV -p 139,445 192.168.56.10` confirmou Samba nas portas 139 e 445.
-
-Comando executado:
+### Teste SMB — registro histórico
 
 ```bash
 medusa -h 192.168.56.10 -u msfadmin -P ~/ftp_senhas.txt -M smbnt -n 445 -t 1 -f
 ```
 
-Significado dos parâmetros: os mesmos parâmetros de host, usuário, wordlist, concorrência e parada antecipada descritos no teste FTP; `-M smbnt` seleciona o módulo SMBNT e `-n 445` seleciona a porta TCP 445.
+O comando utilizou o módulo `smbnt` na porta TCP 445, com um usuário e uma lista de senhas.
 
-Resultado reportado pelo Medusa: `ACCOUNT FOUND: [smbnt]` com `SUCCESS (ADMIN$ - Access Allowed)` para o usuário de laboratório `msfadmin` no host `192.168.56.10`. Isso indica que o módulo reportou autenticação válida e acesso permitido ao compartilhamento administrativo `ADMIN$` durante sua verificação. A saída original continha a senha em texto claro; ela foi omitida desta documentação.
+Resultado reportado na saída compartilhada: `ACCOUNT FOUND: [smbnt]` e `SUCCESS (ADMIN$ - Access Allowed)` para a conta de laboratório `msfadmin`. A senha foi omitida. A saída específica não está entre as cinco capturas atualmente versionadas.
 
-### Limites e cuidados
+**Classificação correta:** esse teste SMB com um usuário e várias senhas é uma tentativa de força bruta contra uma conta. Não demonstra, sozinho, password spraying, que normalmente aplica uma ou poucas senhas a vários usuários. A consulta de compartilhamentos com smbclient não comprova enumeração de usuários.
 
-- Os testes foram direcionados ao Metasploitable 2 do laboratório isolado e autorizado.
-- A wordlist utilizada tinha três entradas; seu conteúdo não é reproduzido aqui.
-- O resultado descreve o que o Medusa reportou no ambiente de laboratório, não uma garantia de acesso equivalente em outros sistemas.
-- Não publicar senhas, hashes, tokens ou outros segredos em capturas, logs ou no repositório.
-- Em ambientes reais, preferir autenticação forte, limitar tentativas, monitorar falhas de login, restringir compartilhamentos administrativos e desabilitar protocolos/versões legados quando possível.
+## DVWA — formulário web
 
-## Padrão para documentar comandos
+O DVWA foi acessado no laboratório, com Security Level em Low. No módulo Brute Force, foi observado no Firefox DevTools/Network um pedido GET para o caminho `/dvwa/vulnerabilities/brute/`, com os campos `username`, `password` e `Login`.
 
-Para cada comando efetivamente executado, registrar:
+Foram realizados testes manuais:
+- `admin` com uma senha incorreta de teste: mensagem de credenciais incorretas.
+- `admin` com a credencial padrão do laboratório: mensagem de boas-vindas.
 
-1. Finalidade.
-2. Significado dos parâmetros.
-3. Host ou serviço de laboratório utilizado.
-4. Resultado observado.
-5. Evidência correspondente.
-6. Cuidados e limites de uso.
+Esses resultados validam o comportamento manual do formulário, mas não constituem um ataque automatizado.
+
+### Limitação do módulo HTTP do Medusa
+
+A consulta `medusa -M http -q` exibiu opções para User-Agent, diretório, método HTTP, autenticação BASIC/DIGEST/NTLM, domínio e cabeçalhos adicionais. Essa ajuda não demonstra suporte direto a parâmetros de formulário web e análise de mensagens de sucesso/erro do DVWA. Por isso, o projeto não afirma que o Medusa automatizou o formulário.
+
+## Boas práticas
+
+- Limitar tentativas e aplicar atrasos progressivos.
+- Monitorar falhas e sucessos de autenticação.
+- Exigir senhas fortes e MFA.
+- Restringir serviços e compartilhamentos por rede e privilégio.
+- Não publicar credenciais, cookies, tokens ou dados pessoais.
+- Executar testes apenas em laboratório próprio ou com autorização explícita.

@@ -1,70 +1,56 @@
 # Evidências e resultados
 
-Este documento separa as capturas efetivamente versionadas dos resultados de execução registrados durante o desenvolvimento. A existência de um resultado descrito aqui não significa que sua captura específica esteja disponível no repositório.
+Este documento diferencia capturas efetivamente versionadas de observações e saídas textuais registradas durante o desenvolvimento.
 
-## Inventário das capturas
+## Capturas preservadas
 
-Após a revisão visual das capturas originais, foram mantidas **5 capturas relevantes**. Os nomes e números originais foram preservados para manter a rastreabilidade. Consulte o [índice das evidências](../evidencias/README.md).
+Foram mantidas cinco capturas relevantes. Consulte o [índice de evidências](../evidencias/README.md).
 
-As cinco imagens documentam:
-- conectividade entre Kali e Metasploitable 2 e verificação inicial do FTP;
+Elas documentam:
+- conectividade e verificação inicial do FTP;
 - consulta de compartilhamentos SMB;
-- identificação das versões dos serviços FTP e SMB;
-- verificação de FTP anônimo por Nmap e conexão manual.
+- identificação de serviços FTP e SMB;
+- verificação de FTP anônimo;
+- conexão manual ao FTP.
 
-## Resultados registrados durante o trabalho
+## Resultados textuais registrados
 
-### Preparação e conectividade
+### Ambiente e reconhecimento
 
 - [x] Kali Linux e Metasploitable 2 preparados no VirtualBox.
-- [x] Rede privada Host-Only registrada.
-- [x] Endereços registrados: Kali `192.168.56.20` e alvo `192.168.56.10`.
-- [x] Teste de conectividade documentado: 4 pacotes enviados, 4 recebidos e 0% de perda.
+- [x] Rede Host-Only utilizada.
+- [x] Comunicação entre as VMs confirmada.
+- [x] Reconhecimento de serviços com Nmap realizado.
+- [x] Consulta de compartilhamentos SMB realizada.
 
-### Reconhecimento e enumeração
+### Medusa FTP e SMB
 
-- [x] Reconhecimento do host `192.168.56.10` com Nmap documentado.
-- [x] FTP identificado na porta 21 (vsftpd 2.3.4, conforme saída registrada).
-- [x] FTP identificado na porta 2121 (ProFTPD 1.3.1, conforme saída registrada).
-- [x] SMB/Samba identificado nas portas 139 e 445.
-- [x] Consulta de compartilhamentos com `smbclient` documentada.
-- [x] Login FTP anônimo documentado como permitido nas verificações registradas.
+As saídas compartilhadas durante o desenvolvimento reportaram resultados positivos para FTP e SMB. Os comandos históricos estão descritos em [Ferramentas utilizadas](ferramentas.md).
 
-### Testes controlados com Medusa
+- [x] Comandos e parâmetros históricos documentados.
+- [x] Resultados reportados transcritos sem divulgar senhas.
+- [ ] Capturas específicas das execuções do Medusa não estão no repositório.
 
-**FTP — resultado registrado**
+**Nota sobre endereços:** os comandos históricos apontam para `192.168.56.10`, endereço que na configuração inicial correspondia ao Metasploitable. Na configuração posterior confirmada, Kali passou a usar `192.168.56.10` e Metasploitable `192.168.56.101`. A diferença está explicitada para não confundir o endereço histórico com o atual.
 
-O comando documentado em [Ferramentas utilizadas](ferramentas.md) direcionou o módulo FTP do Medusa ao host de laboratório na porta 21, usando uma lista local de candidatos, uma tarefa simultânea e interrupção após encontrar uma conta válida. A saída compartilhada reportou `ACCOUNT FOUND: [ftp]` e `[SUCCESS]` para o usuário de laboratório `msfadmin`.
+**Nota sobre SMB:** o teste registrado com Medusa utilizou um usuário e uma lista de senhas. Portanto, ele não deve ser chamado de password spraying. A enumeração de compartilhamentos via smbclient também não é enumeração de usuários.
 
-- [x] Comando e parâmetros descritos.
-- [x] Resultado reportado transcrito sem divulgar a senha.
-- [ ] Captura específica da execução ainda não incluída.
+### DVWA
 
-**SMB — resultado registrado**
+- [x] Login inicial e acesso ao DVWA realizados.
+- [x] Security Level configurado como Low.
+- [x] Teste manual com credencial inválida observado.
+- [x] Teste manual com credencial padrão observado como válido.
+- [x] Requisição GET e nomes dos parâmetros observados no DevTools/Network.
+- [ ] Automação de brute force no formulário web não foi concluída.
+- [ ] Capturas específicas do DVWA não estão no repositório.
 
-O comando documentado em [Ferramentas utilizadas](ferramentas.md) direcionou o módulo `smbnt` do Medusa ao host de laboratório na porta 445. A saída compartilhada reportou `ACCOUNT FOUND: [smbnt]` e `SUCCESS (ADMIN$ - Access Allowed)` para o usuário de laboratório `msfadmin`.
+Consulte [DVWA — formulário Brute Force](dvwa-formulario-web.md) para detalhes e limitações.
 
-- [x] Comando e parâmetros descritos.
-- [x] Resultado reportado transcrito sem divulgar a senha.
-- [ ] Captura específica da execução ainda não incluída.
+## Limites das evidências
 
-## Pendências antes da entrega
+A documentação descreve somente o que foi observado ou reportado durante o desenvolvimento. Uma saída textual relatada não é equivalente a uma captura de tela versionada. Não foram criadas evidências fictícias nem atribuídos resultados não observados.
 
-- [ ] Confirmar se as capturas específicas do Medusa FTP e SMB podem ser recuperadas.
-- [ ] Conferir os requisitos exatos do desafio/plataforma de avaliação.
-- [ ] Revisar ortografia, links internos e visualização do README no GitHub.
+## Cuidados antes de publicar
 
-## Como registrar uma nova evidência
-
-Para cada nova captura, registrar:
-
-1. **Arquivo:** nome exato do arquivo versionado.
-2. **Etapa:** fase do laboratório a que pertence.
-3. **Objetivo:** o que se pretendia verificar.
-4. **Observação:** o que a captura efetivamente demonstra.
-5. **Resultado:** saída observada, sem inferências não comprovadas.
-6. **Proteção:** confirmar que não há senhas, hashes, tokens ou dados pessoais expostos.
-
-## Nota de segurança
-
-As saídas originais do Medusa podem exibir senhas em texto claro. Não as reproduza em documentação, commits ou imagens públicas. Mantenha os testes restritos ao laboratório próprio e autorizado.
+Não incluir senhas, hashes, cookies, tokens, chaves privadas ou dados pessoais. Se novas capturas forem adicionadas, ocultar segredos sem alterar o significado técnico do resultado.
